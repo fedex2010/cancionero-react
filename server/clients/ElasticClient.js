@@ -6,8 +6,8 @@ const alabanzasType = 'alabanzas-ipnj'
 class ElasticClient {
     constructor(){
         this.client = new elasticsearch.Client({
-            host: 'http://site:a8df4d09da2aca4bbaddbc24df67495b@ori-eu-west-1.searchly.com',
-            log: 'trace'
+//            host: 'http://site:a8df4d09da2aca4bbaddbc24df67495b@ori-eu-west-1.searchly.cm',
+            host: 'http://site:a8df4d09da2aca4bbaddbc24df67495b@ori-eu-west-1.searchly.com'
           });
     }
 

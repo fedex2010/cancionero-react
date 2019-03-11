@@ -3,24 +3,25 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var cors = require('cors')
+
 const expressValidator = require('express-validator')
 var bodyParser = require('body-parser')
 
 //ROUTES
 var authRouter = require('./routes/auth');
 var songsRouter = require('./routes/songs');
+
+let basePathApi = "/cancionero"
 //ROUTES
 
 
 var app = express();
 
-let basePathApi = "/cancionero"
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(cors())
+//app.use(cors())
 app.use(expressValidator())
 
 // view engine setup
@@ -29,9 +30,16 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
-//app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 app.use(basePathApi, authRouter);
 app.use(basePathApi, songsRouter);

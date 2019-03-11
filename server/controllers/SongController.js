@@ -19,6 +19,16 @@ class SongController {
                     })
                     .catch( err => next(err) )                    
   }
+
+  addSongs(req,res,next){
+    elasticClient.addSongs(req.body)
+                    .then( (songs) =>{
+                      res.send( songs )
+                    })
+                    .catch( err => next(err) )                    
+  }
+
+  
 }
 
 module.exports = SongController

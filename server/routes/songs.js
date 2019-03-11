@@ -6,7 +6,9 @@ const songController = new SongController()
 
 const { query } = require('express-validator/check')
 
+//AGREGAR MIDDLEWARE DE VALIDACION
 router.get('/songs' , songController.findSongs );
+router.post('/songs' , songController.addSongs );
 
 //query('query', 'query doesnt exists').exists()
 
