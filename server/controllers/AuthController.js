@@ -31,6 +31,24 @@ class AuthController {
   
   }
 
+  register(req, res, next) {
+    let { nickName , password } = req.body
+    
+    console.log( req.body )
+    
+    if( nickName == "admin" && password == "admin" ){
+    
+      sessionService.setUserIdCookie(res,"admin")
+      res.status(200).send( responseService.getResponse(200) );
+  
+    }else{
+  
+      res.status(401).send( errorService.getErrorObject(401,"User or pass incorrect") );
+  
+    }
+  
+  }
+
   
 }
 
