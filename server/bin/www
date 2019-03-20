@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-
+let mongooConfig = require('../config/mongooseConfig');
 var app = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
@@ -21,13 +21,19 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+mongooConfig(server)
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+server.on('ready', function() { 
+  server.listen(port, function(){ 
+      console.log("app is ready"); 
+  }); 
+});
+
 
 /**
  * Normalize a port into a number, string, or false.

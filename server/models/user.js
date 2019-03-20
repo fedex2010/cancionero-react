@@ -1,5 +1,3 @@
-// File: ./models/somemodel.js
-
 //Require Mongoose
 var mongoose = require('mongoose');
 
