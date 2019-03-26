@@ -2,10 +2,12 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let errorService = require('./services/errorService')
 
 const expressValidator = require('express-validator')
 var bodyParser = require('body-parser')
+
+var logger = require('./utils/logger');
 
 //ROUTES
 var authRouter = require('./routes/auth');
@@ -29,7 +31,6 @@ app.use(expressValidator())
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -42,24 +43,24 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.get(basePathApi+"/health", (req,res) => res.send("ok"));
 app.use(basePathApi,  authRouter);
 app.use(basePathApi + "/user", userRouter);
 app.use(basePathApi, songsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  let err = errorService.getErrorObject( "path not found",404 )
+  logger.error("path not found --> " +`${req.method} ${req.originalUrl}`);
+  res.status(404).send(err)
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  logger.error(JSON.stringify(err));
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.status(500).send( errorService.checkErrorObject(err) )
 });
+
 
 module.exports = app;
