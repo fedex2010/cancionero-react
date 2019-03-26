@@ -1,12 +1,11 @@
 "use strict";
 
+let CancioneroError = require("../error/CancioneroError")
+    
 exports.validationHandler = result => {
     if (result.isEmpty()) return
     
-    let err = new Error( )
+    let message = result.array().map(i => `${i.msg}\n`).join('')
     
-    err.code = 400
-    err.message = result.array().map(i => `${i.msg}\n`).join('')
-    
-    throw  err
+    throw new CancioneroError(message,400)
 }
