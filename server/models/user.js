@@ -30,7 +30,7 @@ var UserSchema = new Schema({
 });
 
 UserSchema.statics.createData = function(params,type = "USER",status="ACTIVE") {
-  const { name, surname, nickname, password ,email} = params
+  const { name, surname, nickname, password ,email } = params
               
   let data = {
     name,surname,nickname,password,email,
@@ -45,7 +45,6 @@ UserSchema.statics.createData = function(params,type = "USER",status="ACTIVE") {
 UserSchema.statics.findUserByEmail = function(mail) {
   return this.findOne({ email: mail });
 }
-
 
 //Export function to create "SomeModel" model class
 module.exports = mongoose.model('User', UserSchema );

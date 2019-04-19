@@ -4,7 +4,7 @@ let errorService = require('../services/errorService')
 let responseService = require('../services/responseService')
 let validatorService = require('../services/validatorService')
 
-const User = require('../models/user');
+const UserService = require('../services/userService')
 
 class UserController {
   constructor() {
@@ -14,9 +14,8 @@ class UserController {
   create(req,res,next){
       req.getValidationResult() // to get the result of above validate fn
           .then( result => validatorService.validationHandler(result))
-          .then(async () => {
-              
-              let userCreated = await User.create( User.createData(req.body) )
+          .then( () => {
+              let userCreated = UserService.create( req.body )
               
               res.send(userCreated)
             })
