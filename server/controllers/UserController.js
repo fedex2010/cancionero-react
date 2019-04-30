@@ -7,23 +7,20 @@ let validatorService = require('../services/validatorService')
 const UserService = require('../services/userService')
 
 class UserController {
-  constructor() {
-
-  }
 
   create(req,res,next){
       req.getValidationResult() // to get the result of above validate fn
           .then( result => validatorService.validationHandler(result))
-          .then( () => {
-              let userCreated = UserService.create( req.body )
-              
-              res.send(userCreated)
-            })
-          .catch(err => {
-            console.log("--------------")
-            console.log( err )
-            console.log("--------------")
 
+          .then( () => UserService.create( req.body ) )
+
+          .then( userCreated => {
+
+            res.send(userCreated)
+
+          })
+          .catch(err => {
+            
             next(err)
           })
   }
@@ -38,7 +35,7 @@ class UserController {
           body('nickname').optional().isLength({ min: 3 }).withMessage("El nombre de usuario debe tener al menos 3 caracteres"),
           body('password').isLength({ min: 3 }).withMessage("El password debe tener al menos 3 caracteres"),
           body('email').custom(value => {
-                              return User.findUserByEmail(value)
+                              return UserService.findUserByEmail(value)
                               .then(user => {                    
                                 if (user) {
                                   return Promise.reject('E-mail ya utilizado por otro usuario, utilice otro por favor');

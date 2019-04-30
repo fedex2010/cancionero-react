@@ -1,3 +1,6 @@
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 //Require Mongoose
 var mongoose = require('mongoose');
 
@@ -45,6 +48,23 @@ UserSchema.statics.createData = function(params,type = "USER",status="ACTIVE") {
 UserSchema.statics.findUserByEmail = function(mail) {
   return this.findOne({ email: mail });
 }
+
+//------------------------------------------------
+// MIDDLEWARE
+UserSchema.pre('save', function(next) {
+  let user = this
+  
+  //only hash password if it has been modified or it is new
+  if(!user.isModified('password')) return next()
+
+  bcrypt.hash(user.password, saltRounds, function(err, hash) {
+    if(err) next(err)
+
+    user.password = hash
+    next();    
+  });
+
+});
 
 //Export function to create "SomeModel" model class
 module.exports = mongoose.model('User', UserSchema );

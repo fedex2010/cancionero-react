@@ -40,7 +40,7 @@ workflows:
  version: 2
  Example_Workflow:
    jobs:
-     - Hello-World:
+     - Hello-World
      - I-Have-Code:
          requires:
            - Hello-World

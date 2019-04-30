@@ -57,6 +57,7 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
+  logger.error("originalUrl: " + req.originalUrl);
   logger.error(JSON.stringify(err));
 
   res.status(500).send( errorService.checkErrorObject(err) )
