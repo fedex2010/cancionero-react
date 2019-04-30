@@ -5,6 +5,7 @@ var AuthController = require("../controllers/AuthController")
 var authController = new AuthController()
 
 /* GET users listing. */
-router.post('/login' , authController.signin);
+router.post('/login' , authController.checkParams("login") ,authController.login);
+router.post('/logout' , authController.logout);
 
 module.exports = router;

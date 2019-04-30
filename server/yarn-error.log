@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add moment
+  /usr/local/bin/node /usr/local/bin/yarn
 
 PATH: 
   /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
@@ -26,6 +26,7 @@ npm manifest:
       "start": "node ./bin/www"
     },
     "dependencies": {
+      "bcrypt": "^3.0.6",
       "body-parser": "^1.18.3",
       "cookie-parser": "~1.4.3",
       "cors": "^2.8.5",
