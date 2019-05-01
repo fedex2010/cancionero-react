@@ -1,26 +1,38 @@
 const { body } = require('express-validator/check');
 
 var responseService = require('../services/responseService')
+var errorService = require('../services/errorService')
 var sessionService = require('../services/sessionService')
 let validatorService = require('../services/validatorService')
 
-const UserService = require('../services/userService')
+let cryptoUtils = require("../utils/cryptoUtils")
+let CancioneroError = require("../error/CancioneroError")
 
-/* GET users listing. */
+
+const UserService = require('../services/userService')
 class AuthController {
 
   login(req, res, next) {
+    let aUser
     req.getValidationResult() // to get the result of above validate fn
         .then( result => validatorService.validationHandler(result))
 
         .then( () => UserService.findUserByEmail( req.body.email ) )
 
         .then( user => {
-          
-          res.send( responseService.getResponse(200,user) )
+          aUser = user
+          return cryptoUtils.compare( req.body.password, user.password )
+        })
+
+        .then( areEqual => {  
+          if(!areEqual){
+            throw new CancioneroError("user or pass incorrect",400)
+          }else{
+            sessionService.setTokenCookie(res,"TOKEN")
+            res.send( responseService.getResponse(200,aUser) )
+          }
         })
         .catch(err => {
-
           next(err)
         })
   }
