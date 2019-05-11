@@ -27,10 +27,6 @@ app.use(bodyParser.json());
 //app.use(cors())
 app.use(expressValidator())
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -46,7 +42,7 @@ app.use(function(req, res, next) {
 app.get(basePathApi+"/health", (req,res) => res.send("ok"));
 app.use(basePathApi,  authRouter);
 app.use(basePathApi + "/user", userRouter);
-app.use(basePathApi, songsRouter);
+app.use(basePathApi,songsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

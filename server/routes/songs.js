@@ -4,13 +4,10 @@ var router = express.Router();
 const SongController = require( '../controllers/SongController' )
 const songController = new SongController()
 
-const { query } = require('express-validator/check')
-
 //AGREGAR MIDDLEWARE DE VALIDACION
 router.get('/songs' , songController.findSongs );
-router.post('/songs' , songController.addSongs );
+router.post('/songs' , songController.checkParams("create") ,songController.create );
 
-//query('query', 'query doesnt exists').exists()
 
 module.exports = router;
 
@@ -20,5 +17,4 @@ module.exports = router;
 CURSO 
 ANGULAR 7
 https://mega.nz/?fbclid=IwAR3xFMRKI1nOyeDa2JJLNc4C2R7QJQG-8o6QY1O4aBANGSp3DVSQpWnhVu0#F!frAGTCKD!JAJp4w9SN64xm0ngdS7ZfQ!PiJwhQJS
-
 */
